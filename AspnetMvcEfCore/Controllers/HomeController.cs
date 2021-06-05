@@ -1,4 +1,4 @@
-﻿using AspnetMvcEfCore.Models;
+﻿using DomainRegistrarWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AspnetMvcEfCore.Controllers
+namespace DomainRegistrarWebApp.Controllers
 {
     public class HomeController : Controller
     {
@@ -24,6 +24,18 @@ namespace AspnetMvcEfCore.Controllers
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+        public IActionResult About()
+        {
+            return View();
+        }
+        public IActionResult Contact()
+        {
+            return View();
+        }
+        public IActionResult Services()
         {
             return View();
         }

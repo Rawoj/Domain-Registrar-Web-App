@@ -8,10 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Copycat\**" />
-    <Content Remove="Copycat\**" />
-    <EmbeddedResource Remove="Copycat\**" />
-    <None Remove="Copycat\**" />
+    <None Include="obj\AspnetMvcEfCore.csproj.nuget.g.targets" />
   </ItemGroup>
 
   <ItemGroup>

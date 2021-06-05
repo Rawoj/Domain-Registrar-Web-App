@@ -1,6 +1,6 @@
 using System;
 
-namespace AspnetMvcEfCore.Models
+namespace DomainRegistrarWebApp.Models
 {
     public class ErrorViewModel
     {
