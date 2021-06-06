@@ -9,32 +9,24 @@ using System.Threading.Tasks;
 
 namespace DomainRegistrarWebApp.Controllers
 {
-    public class HomeController : Controller
+    public class AuthController: Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<AuthController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public AuthController(ILogger<AuthController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Login()
         {
             return View();
         }
-        public IActionResult About()
+        public IActionResult SignUp()
         {
             return View();
         }
-        public IActionResult Contact()
-        {
-            return View();
-        }
-        public IActionResult Services()
-        {
-            return View();
-        }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

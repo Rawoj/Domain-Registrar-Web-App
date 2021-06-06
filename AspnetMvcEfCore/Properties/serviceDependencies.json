@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "connectionId": "Kestrel:Certificates:Development:Password",
+      "type": "mssql"
+    },
+    "secrets1": {
+      "type": "secrets"
+    }
+  }
+}
