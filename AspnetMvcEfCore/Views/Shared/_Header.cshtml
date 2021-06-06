@@ -3,7 +3,7 @@
 <header class="">
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href=""><h2>Host <em>Cloud</em></h2></a>
+            <a class="navbar-brand" @Url.Action("Home")><h2>Host <em>Cloud</em></h2></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -16,20 +16,20 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="About">About Us</a>
+                        <a class="nav-link" href="@Url.Action("About", "Home")" >About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Services">Our Services</a>
+                        <a class="nav-link" href="@Url.Action("Services", "Home")" >Our Services</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Contact">Contact Us</a>
+                        <a class="nav-link" href="@Url.Action("Contact", "Home")" >Contact Us</a>
                     </li>
                 </ul>
             </div>
             <div class="functional-buttons">
                 <ul>
-                    <li><a href="Login">Log in</a></li>
-                    <li><a href="SignUp">Sign Up</a></li>
+                    <li><a href="@Url.Action("Login", "Auth")">Log in</a></li>
+                    <li><a href="@Url.Action("SignUp", "Auth")">Sign Up</a></li>
                 </ul>
             </div>
         </div>

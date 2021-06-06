@@ -357,6 +357,25 @@ header {
 	padding: 300px 0px;
 	background-position: center center;
 }
+
+.banner-small {
+	background-image: url(../images/banner-bg.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	padding: 0px 0px;
+	background-position: center center;
+}
+@media (max-width: 990px) {
+	.banner-small {
+		background-image: url(../images/banner-bg.jpg);
+		background-size: cover;
+		background-repeat: no-repeat;
+		padding: 75px 0px;
+		background-position: center center;
+	}
+	
+}
+
 .banner .caption {
 	text-align: center;
 }
@@ -657,7 +676,7 @@ header {
 /* Testimonials Style */
 .testimonials-section {
 	margin-top: 140px;
-	background-color: #f7f7f7;
+	background-color: white;
 	padding: 100px 0px;
 }
 .testimonials-section .section-heading {
@@ -790,7 +809,7 @@ footer .sub-footer a {
 	padding: 140px 0px;
 	background-color: #f7f7f7;
 }
-.about-us .left-image {
+.about-us .left-content {
 	margin-right: 30px;
 }
 .about-us .right-content {

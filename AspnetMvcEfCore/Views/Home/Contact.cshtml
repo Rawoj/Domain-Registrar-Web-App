@@ -1,9 +1,13 @@
 ﻿@{
-    ViewData["Title"] = "Contact";
+    ViewData["Title"] = "Contact Us";
 }
 
+@await Html.PartialAsync("_HeaderBanner")
 
 
-<div>
-    @await Html.PartialAsync("_Contact")
-</div>
+<br /><br />
+@await Html.PartialAsync("_Contact")
+
+
+
+
