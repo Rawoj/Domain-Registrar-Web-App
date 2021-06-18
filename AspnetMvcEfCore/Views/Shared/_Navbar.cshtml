@@ -29,14 +29,19 @@
         </ul>
     </div>
 
-    <!-- Show login and signup buttons if not logged in -->
-    <!-- Otherwise show logout button -->
+
     @{
-        bool isLoggedIn = false;
+        /* 
+            Show login and signup buttons if not logged in
+            Otherwise show logout and profile buttons
+        */
+
+        bool isLoggedIn = true;
         if (isLoggedIn)
         {
             <div class="functional-buttons">
                 <ul>
+                    <li><a href="@Url.Action("Profile", "Account")">Profile</a></li>
                     <li><a href="@Url.Action("LogOut", "Auth")">Log out</a></li>
                 </ul>
             </div>
