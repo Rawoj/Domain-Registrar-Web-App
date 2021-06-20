@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Host Cloud</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/fontawesome.css">
+    <link rel="stylesheet" href="~/css/templatemo-host-cloud.css">
+    <link rel="stylesheet" href="~/css/owl.css">
+</head>
+<body>
+    @await Html.PartialAsync("_NavbarWithoutButtons")
+
+
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    @RenderBody()
+
+    @{ 
+        var view = ViewBag.CurrentView;
+        <div>VIEW: @view</div>
+        if (view == "SignUp")
+        {
+        <div>
+            Already have an account ? <br />
+            <a href = "" > login here </a >
+        </div> 
+        }        
+    }
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/js/custom.js"></script>
+    <script src="~/js/owl.js"></script>
+    <script src="~/js/accordions.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
