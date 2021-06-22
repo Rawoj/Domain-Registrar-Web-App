@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using DomainRegistrarWebApp.Database;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DomainRegistrarWebApp.Models.Users
@@ -22,5 +24,9 @@ namespace DomainRegistrarWebApp.Models.Users
         public string PasswordHash { get; set; }
 
         public DateTime DateCreated { get; set; }
+
+        public ICollection<BoughtDomain> BoughtDomains { get; set; }
+
+
     }
 }

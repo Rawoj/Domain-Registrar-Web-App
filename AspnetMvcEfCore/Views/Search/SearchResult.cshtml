@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+@model SearchResultViewModel
+
+<div class="main-page">
+    <p class="css-test">CSS Test</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Domain name</th>
+                <th scope="col">Domain availability</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @{
+                    string dm = Model.DomainName;
+                    string da = Model.DomainAvailability;
+                }
+                <td>@dm</td>
+                <td>@da</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

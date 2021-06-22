@@ -9,9 +9,9 @@ namespace DomainRegistrarWebApp.Interfaces
 {
     public class UsersDataService : IUsersDataService
     {
-        private readonly UsersContext _db;
+        private readonly DatabaseContext _db;
 
-        public UsersDataService(UsersContext db)
+        public UsersDataService(DatabaseContext db)
         {
             _db = db;
         }

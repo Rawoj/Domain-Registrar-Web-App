@@ -1,36 +1,44 @@
 ﻿@{
     ViewData["Title"] = "Sign Up";
-    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    Layout = "~/Views/Shared/Layouts/_AuthLayout.cshtml";
 }
 
-<h1>Sign Up</h1>
-
-<form id="contact" action="" method="post">
+<div class="container">
     <div class="row">
-        <div class="col-md-12 col-sm-12">
-            <fieldset>
-                <input name="username" type="text" id="username" placeholder="Username" required="">
-            </fieldset>
-        </div>
-        <div class="col-md-12 col-sm-12">
-            <fieldset>
-                <input name="password" type="password" id="password" placeholder="Password">
-            </fieldset>
-        </div>
-        <div class="col-md-12 col-sm-12">
-            <fieldset>
-                <input name="email" type="email" id="email" placeholder="Email" required="">
-            </fieldset>
-        </div>
-        <div class="col-lg-12">
-            <fieldset>
-                <button type="submit" id="form-submit" class="main-button">Sign Up</button>
-            </fieldset>
+        <div class="col-md-6">
+            <h1>Sign Up</h1>
+            <div class="contact-form">
+                <form id="signup" action="" method="post">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <fieldset>
+                                <input name="username" type="text" id="username" placeholder="Username" required="">
+                            </fieldset>
+                        </div>
+                        <div class="col-md-12 col-sm-12">
+                            <fieldset>
+                                <input name="password" type="password" id="password" placeholder="Password">
+                            </fieldset>
+                        </div>
+                        <div class="col-md-12 col-sm-12">
+                            <fieldset>
+                                <input name="email" type="email" id="email" placeholder="Email" required="">
+                            </fieldset>
+                        </div>
+                        <div class="col-lg-12">
+                            <fieldset>
+                                <button type="submit" id="form-submit" class="main-button">Sign Up</button>
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</form>
 
-<div>
-    Already have an account ? <br />
-    <a href="@Url.Action("Login", "Auth")"> Login here </a>
+    <div>
+        <br />
+        Already have an account? <br />
+        <a href="@Url.Action("Login", "Auth")"> Login here </a><br /><br />
+    </div>
 </div>

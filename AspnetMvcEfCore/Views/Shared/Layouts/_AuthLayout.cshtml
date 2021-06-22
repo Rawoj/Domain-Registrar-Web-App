@@ -11,10 +11,11 @@
     <link rel="stylesheet" href="~/css/owl.css">
 </head>
 <body>
-    @await Html.PartialAsync("_HeaderBannerWithoutButtons")
+    @await Html.PartialAsync("Banners/_HeaderBannerWithoutButtons")
     <br /><br />
     <br /><br />
     @RenderBody()
+    @await Html.PartialAsync("_Footer")
 
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

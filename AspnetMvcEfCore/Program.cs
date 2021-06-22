@@ -20,6 +20,13 @@ namespace DomainRegistrarWebApp
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.ConfigureAppConfiguration((hostContext, builder) =>
+                    {
+                        if (hostContext.HostingEnvironment.IsDevelopment())
+                        {
+                            builder.AddUserSecrets<Program>();
+                        }
+                    });
                     webBuilder.UseStartup<Startup>();
                 });
     }

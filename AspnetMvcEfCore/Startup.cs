@@ -1,6 +1,10 @@
+using DomainRegistrarWebApp.Database;
+using DomainRegistrarWebApp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +28,11 @@ namespace DomainRegistrarWebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<DatabaseContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                   assembly => assembly.MigrationsAssembly(typeof(DatabaseContext).Assembly.FullName));
+            });
+            services.Configure<AppKeyConfig>(Configuration.GetSection("WhoIsXmlApiKey:ServiceApiKey"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +61,7 @@ namespace DomainRegistrarWebApp
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }

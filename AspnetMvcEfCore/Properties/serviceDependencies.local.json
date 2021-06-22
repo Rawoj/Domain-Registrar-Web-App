@@ -4,8 +4,9 @@
       "type": "secrets.user"
     },
     "mssql1": {
+      "resourceId": null,
       "type": "mssql.local",
-      "connectionId": "Kestrel:Certificates:Development:Password",
+      "connectionId": "DbConnection",
       "secretStore": "LocalSecretsFile"
     }
   }

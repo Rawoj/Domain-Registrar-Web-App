@@ -8,9 +8,9 @@ namespace DomainRegistrarWebApp.Interfaces
 {
     public class BoughtDomainsDataService : IBoughtDomainsDataService
     {
-        private readonly BoughtDomainsContext _db;
+        private readonly DatabaseContext _db;
 
-        public BoughtDomainsDataService(BoughtDomainsContext db)
+        public BoughtDomainsDataService(DatabaseContext db)
         {
             _db = db;
         }

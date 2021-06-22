@@ -3,16 +3,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainRegistrarWebApp.Database
 {
-    public class UsersContext : DbContext
+    public class DatabaseContext : DbContext
     {
-        public UsersContext(DbContextOptions options) : base(options)
+        public DatabaseContext(DbContextOptions options) : base(options)
         {
+
         }
 
-        protected UsersContext()
+        protected DatabaseContext()
         {
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<BoughtDomain> BoughtDomains { get; set; }
+
+
     }
 }
