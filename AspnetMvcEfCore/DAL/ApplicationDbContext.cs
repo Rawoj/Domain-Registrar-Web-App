@@ -1,16 +1,17 @@
 ﻿using DomainRegistrarWebApp.Models.Users;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace DomainRegistrarWebApp.Database
 {
-    public class DatabaseContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
-        public DatabaseContext(DbContextOptions options) : base(options)
+        public ApplicationDbContext(DbContextOptions options) : base(options)
         {
 
         }
 
-        protected DatabaseContext()
+        protected ApplicationDbContext()
         {
         }
 

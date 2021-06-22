@@ -8,6 +8,8 @@ namespace DomainRegistrarWebApp.Interfaces
     {
         Task<List<User>> GetUsers();
 
+        User GetUser(User u);
+
         Task<bool> AddUser(User u);
 
         Task AddUsersByTransaction(IEnumerable<User> users);

@@ -15,13 +15,15 @@ namespace DomainRegistrarWebApp.Models.Users
         public string Username { get; set; }
 
         [Required]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         [Required]
         public decimal Balance { get; set; }
 
         [Required]
-        public string PasswordHash { get; set; }
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
 
         public DateTime DateCreated { get; set; }
 

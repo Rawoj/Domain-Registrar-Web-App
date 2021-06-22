@@ -9,9 +9,9 @@ namespace DomainRegistrarWebApp.Interfaces
 {
     public class UsersDataService : IUsersDataService
     {
-        private readonly DatabaseContext _db;
+        private readonly ApplicationDbContext _db;
 
-        public UsersDataService(DatabaseContext db)
+        public UsersDataService(ApplicationDbContext db)
         {
             _db = db;
         }
@@ -53,5 +53,11 @@ namespace DomainRegistrarWebApp.Interfaces
         {
             return await _db.Users.ToListAsync();
         }
+
+        public User GetUser(User u)
+        {
+            return _db.Find<User>(u);
+        }
+
     }
 }
