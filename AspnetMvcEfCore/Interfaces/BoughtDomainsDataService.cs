@@ -1,9 +1,7 @@
 ﻿using DomainRegistrarWebApp.Database;
-using DomainRegistrarWebApp.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DomainRegistrarWebApp.Interfaces
@@ -29,7 +27,6 @@ namespace DomainRegistrarWebApp.Interfaces
             {
                 return false;
             }
-
         }
 
         public async Task AddBoughtDomainsByTransaction(IEnumerable<BoughtDomain> boughtDomains)
@@ -44,20 +41,16 @@ namespace DomainRegistrarWebApp.Interfaces
                 }
 
                 await _db.Database.CommitTransactionAsync();
-
             }
             catch (Exception)
             {
                 await _db.Database.RollbackTransactionAsync();
             }
-
-
         }
 
         public async Task<List<BoughtDomain>> GetBoughtDomains()
         {
             return await _db.BoughtDomains.ToListAsync();
         }
-
     }
 }

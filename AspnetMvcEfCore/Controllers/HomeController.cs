@@ -1,11 +1,7 @@
 ﻿using DomainRegistrarWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DomainRegistrarWebApp.Controllers
 {
@@ -22,14 +18,17 @@ namespace DomainRegistrarWebApp.Controllers
         {
             return View();
         }
+
         public IActionResult About()
         {
             return View();
         }
+
         public IActionResult Contact()
         {
             return View();
         }
+
         public IActionResult Services()
         {
             return View();

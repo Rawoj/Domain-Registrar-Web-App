@@ -1,9 +1,11 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Login";
-    ViewBag.CurrentView = "Login";
     Layout = "~/Views/Shared/_AuthLayout.cshtml";
 }
 
 <h1>Login</h1>
 
+<div>
+    Don't have an account ? <br />
+    <a href="@Url.Action("SignUp", "Auth")"> Sign up here </a>
+</div>

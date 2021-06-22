@@ -16,7 +16,6 @@
  * @todo stagePadding calculate wrong active classes
  */
 ;(function($, window, document, undefined) {
-
 	/**
 	 * Creates a carousel.
 	 * @class The Owl Carousel.
@@ -25,7 +24,6 @@
 	 * @param {Object} [options] - The options
 	 */
 	function Owl(element, options) {
-
 		/**
 		 * Current settings for the carousel.
 		 * @public
@@ -1305,7 +1303,6 @@
 	 * @param {Event} event - The event arguments.
 	 */
 	Owl.prototype.onTransitionEnd = function(event) {
-
 		// if css2 animation then event object is undefined
 		if (event !== undefined) {
 			event.stopPropagation();
@@ -1452,7 +1449,6 @@
 	 * @public
 	 */
 	Owl.prototype.destroy = function() {
-
 		this.$element.off('.owl.core');
 		this.$stage.off('.owl.core');
 		$(document).off('.owl.core');
@@ -1751,7 +1747,6 @@
 	 * @public
 	 */
 	$.fn.owlCarousel.Constructor = Owl;
-
 })(window.Zepto || window.jQuery, window, document);
 
 /**
@@ -1762,7 +1757,6 @@
  * @license The MIT License (MIT)
  */
 ;(function($, window, document, undefined) {
-
 	/**
 	 * Creates the auto refresh plugin.
 	 * @class The Auto Refresh Plugin
@@ -1863,7 +1857,6 @@
 	};
 
 	$.fn.owlCarousel.Constructor.Plugins.AutoRefresh = AutoRefresh;
-
 })(window.Zepto || window.jQuery, window, document);
 
 /**
@@ -1874,14 +1867,12 @@
  * @license The MIT License (MIT)
  */
 ;(function($, window, document, undefined) {
-
 	/**
 	 * Creates the lazy plugin.
 	 * @class The Lazy Plugin
 	 * @param {Owl} carousel - The Owl Carousel
 	 */
 	var Lazy = function(carousel) {
-
 		/**
 		 * Reference to the core.
 		 * @protected
@@ -2013,7 +2004,6 @@
 	};
 
 	$.fn.owlCarousel.Constructor.Plugins.Lazy = Lazy;
-
 })(window.Zepto || window.jQuery, window, document);
 
 /**
@@ -2024,7 +2014,6 @@
  * @license The MIT License (MIT)
  */
 ;(function($, window, document, undefined) {
-
 	/**
 	 * Creates the auto height plugin.
 	 * @class The Auto Height Plugin
@@ -2094,7 +2083,6 @@
 				}, 250);
 			}
 		});
-
 	};
 
 	/**
@@ -2146,7 +2134,6 @@
 	};
 
 	$.fn.owlCarousel.Constructor.Plugins.AutoHeight = AutoHeight;
-
 })(window.Zepto || window.jQuery, window, document);
 
 /**
@@ -2157,7 +2144,6 @@
  * @license The MIT License (MIT)
  */
 ;(function($, window, document, undefined) {
-
 	/**
 	 * Creates the video plugin.
 	 * @class The Video Plugin
@@ -2269,7 +2255,6 @@
 				url = target.attr('href');
 
 		if (url) {
-
 			/*
 					Parses the id's out of the following urls (and probably more):
 					https://www.youtube.com/watch?v=:id
@@ -2474,7 +2459,6 @@
 	};
 
 	$.fn.owlCarousel.Constructor.Plugins.Video = Video;
-
 })(window.Zepto || window.jQuery, window, document);
 
 /**
@@ -2485,7 +2469,6 @@
  * @license The MIT License (MIT)
  */
 ;(function($, window, document, undefined) {
-
 	/**
 	 * Creates the animate plugin.
 	 * @class The Navigation Plugin
@@ -2535,7 +2518,6 @@
 	 * @returns {Boolean|undefined}
 	 */
 	Animate.prototype.swap = function() {
-
 		if (this.core.settings.items !== 1) {
 			return;
 		}
@@ -2596,7 +2578,6 @@
 	};
 
 	$.fn.owlCarousel.Constructor.Plugins.Animate = Animate;
-
 })(window.Zepto || window.jQuery, window, document);
 
 /**
@@ -2609,7 +2590,6 @@
  * @license The MIT License (MIT)
  */
 ;(function($, window, document, undefined) {
-
 	/**
 	 * Creates the autoplay plugin.
 	 * @class The Autoplay Plugin
@@ -2830,7 +2810,6 @@
 	};
 
 	$.fn.owlCarousel.Constructor.Plugins.autoplay = Autoplay;
-
 })(window.Zepto || window.jQuery, window, document);
 
 /**
@@ -3237,7 +3216,6 @@
 	};
 
 	$.fn.owlCarousel.Constructor.Plugins.Navigation = Navigation;
-
 })(window.Zepto || window.jQuery, window, document);
 
 /**
@@ -3360,7 +3338,6 @@
 	};
 
 	$.fn.owlCarousel.Constructor.Plugins.Hash = Hash;
-
 })(window.Zepto || window.jQuery, window, document);
 
 /**
@@ -3373,7 +3350,6 @@
  * @license The MIT License (MIT)
  */
 ;(function($, window, document, undefined) {
-
 	var style = $('<support>').get(0).style,
 		prefixes = 'Webkit Moz O ms'.split(' '),
 		events = {
@@ -3444,5 +3420,4 @@
 		$.support.transform = new String(prefixed('transform'));
 		$.support.transform3d = tests.csstransforms3d();
 	}
-
 })(window.Zepto || window.jQuery, window, document);

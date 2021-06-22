@@ -1,10 +1,8 @@
 ﻿using DomainRegistrarWebApp.Database;
 using DomainRegistrarWebApp.Models.Users;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DomainRegistrarWebApp.Interfaces
@@ -30,7 +28,6 @@ namespace DomainRegistrarWebApp.Interfaces
             {
                 return false;
             }
-
         }
 
         public async Task AddUsersByTransaction(IEnumerable<User> users)
@@ -45,14 +42,11 @@ namespace DomainRegistrarWebApp.Interfaces
                 }
 
                 await _db.Database.CommitTransactionAsync();
-
             }
             catch (Exception)
             {
                 await _db.Database.RollbackTransactionAsync();
             }
-
-
         }
 
         public async Task<List<User>> GetUsers()

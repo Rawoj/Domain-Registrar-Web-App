@@ -11,29 +11,15 @@
     <link rel="stylesheet" href="~/css/owl.css">
 </head>
 <body>
-    @await Html.PartialAsync("_NavbarWithoutButtons")
-
-
-    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    @await Html.PartialAsync("_HeaderBannerWithoutButtons")
+    <br /><br />
+    <br /><br />
     @RenderBody()
-
-    @{ 
-        var view = ViewBag.CurrentView;
-        <div>VIEW: @view</div>
-        if (view == "SignUp")
-        {
-        <div>
-            Already have an account ? <br />
-            <a href = "" > login here </a >
-        </div> 
-        }        
-    }
 
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
     <script src="~/js/custom.js"></script>
     <script src="~/js/owl.js"></script>
     <script src="~/js/accordions.js"></script>

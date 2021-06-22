@@ -1,5 +1,3 @@
-using System;
-
 namespace DomainRegistrarWebApp.Models
 {
     public class ErrorViewModel
