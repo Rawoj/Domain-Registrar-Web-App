@@ -1,6 +1,7 @@
 ﻿using DomainRegistrarWebApp.Database;
 using DomainRegistrarWebApp.Models.Users;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

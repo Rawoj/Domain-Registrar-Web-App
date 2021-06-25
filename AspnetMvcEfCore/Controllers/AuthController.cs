@@ -4,6 +4,7 @@ using DomainRegistrarWebApp.Models.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -14,8 +15,10 @@ using System.Threading.Tasks;
 
 namespace DomainRegistrarWebApp.Controllers
 {
+    [AllowAnonymous]
     public class AuthController : Controller
     {
+
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
@@ -50,7 +53,16 @@ namespace DomainRegistrarWebApp.Controllers
                     new Claim("role", "Member")
                 };
 
-                await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme, "user", "role")));
+                await HttpContext.SignInAsync(
+                    new ClaimsPrincipal(
+                        new ClaimsIdentity(
+                            claims,
+                            CookieAuthenticationDefaults.AuthenticationScheme,
+                            "user",
+                            "role"
+                            )
+                        )
+                    );
 
                 if (Url.IsLocalUrl(returnUrl))
                 {
@@ -70,7 +82,10 @@ namespace DomainRegistrarWebApp.Controllers
             return View();
         }
 
-
+        public async Task<IActionResult> Denied()
+        {
+            return View();
+        }
 
         [HttpGet]
         [Authorize]

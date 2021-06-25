@@ -1,6 +1,8 @@
+using DomainRegistrarWebApp.Authorization;
 using DomainRegistrarWebApp.Database;
 using DomainRegistrarWebApp.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -35,8 +37,53 @@ namespace DomainRegistrarWebApp
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                    assembly => assembly.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
             });
-            services.AddIdentityCore<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 7;
+                options.Password.RequiredUniqueChars = 3;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = false;
+            });
+            
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+                options.LoginPath = "/Auth/Login";
+                options.AccessDeniedPath = "/Auth/Denied";
+                options.SlidingExpiration = true;
+            });
+
+            services.AddIdentityCore<IdentityUser>(options => { })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddAuthentication(IISDefaults.AuthenticationScheme);
+
+            // Authorization handlers.
+            services.AddScoped<IAuthorizationHandler,
+                                  UserIsOwnerAuthorizationHandler>();
+
+            services.AddSingleton<IAuthorizationHandler,
+                                  UserIsAdminAuthorizationHandler>();
+
+
             services.Configure<AppKeyConfig>(Configuration.GetSection("WhoIsXmlApiKey:ServiceApiKey"));
         }
 

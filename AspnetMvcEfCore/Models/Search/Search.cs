@@ -24,9 +24,9 @@ namespace DomainRegistrarWebApp.Models.Search
             apiKey = value;
         }
 
-        readonly string apiUrl = @"https://domain-availability.whoisxmlapi.com/api/";
-        readonly string apiVersion = "v1";
-        readonly string outputFormat = "JSON";
+        private const string apiUrl = @"https://domain-availability.whoisxmlapi.com/api/";
+        private const string apiVersion = "v1";
+        private const string outputFormat = "JSON";
         public ISearchResult CheckAvailability(string domainName)
         {        
 

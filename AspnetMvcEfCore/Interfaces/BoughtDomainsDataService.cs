@@ -1,4 +1,5 @@
 ﻿using DomainRegistrarWebApp.Database;
+using DomainRegistrarWebApp.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,12 @@ namespace DomainRegistrarWebApp.Interfaces
             _db = db;
         }
 
-        public async Task<bool> AddBoughtDomain(BoughtDomain d)
+        public async Task<bool> AddBoughtDomain(BoughtDomain boughtDomain)
         {
             try
             {
-                _db.BoughtDomains.Add(d);
+                _db.BoughtDomains.Add(boughtDomain);
+                
                 await _db.SaveChangesAsync();
                 return true;
             }
