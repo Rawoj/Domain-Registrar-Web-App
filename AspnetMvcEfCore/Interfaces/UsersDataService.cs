@@ -60,5 +60,31 @@ namespace DomainRegistrarWebApp.Interfaces
             return _db.Find<User>(u);
         }
 
+
+        public async void Task<AddBalance>(User u, decimal amount)
+        {
+            try
+            {
+                await _db.Database.BeginTransactionAsync();
+
+                var user = GetUser(u);
+                // User not found
+                if (user == null)
+                {
+                    await _db.Database.RollbackTransactionAsync();
+                }
+                user.Balance += amount;
+
+
+                await _db.SaveChangesAsync();
+                await _db.Database.CommitTransactionAsync();
+            }
+            catch (Exception)
+            {
+                await _db.Database.RollbackTransactionAsync();
+            }
+
+        }
+
     }
 }

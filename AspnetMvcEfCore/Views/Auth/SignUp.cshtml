@@ -2,16 +2,23 @@
     ViewData["Title"] = "Sign Up";
     Layout = "~/Views/Shared/Layouts/_AuthLayout.cshtml";
 }
+@model User;
 
 <div class="container">
     <div class="row">
         <div class="col-md-6">
             <h1>Sign Up</h1>
             <div class="contact-form">
-                <form id="signup" action="" method="post">
-                    <div class="row">
+                <form asp-action="Create" id="signup" action="" method="post">
+                    <div class="row form-group">
                         <div class="col-md-12 col-sm-12">
                             <fieldset>
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="username" class="control-label"></label>
+                                    <input asp-for="username" class="form-control" />
+                                    <span asp-validation-for="username" class="text-danger"></span>
+                                </div>
                                 <input name="username" type="text" id="username" placeholder="Username" required="">
                             </fieldset>
                         </div>

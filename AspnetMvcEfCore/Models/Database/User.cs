@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainRegistrarWebApp.Models.Users
 {
@@ -11,11 +12,11 @@ namespace DomainRegistrarWebApp.Models.Users
         [Key]
         public int Id { get; set; }
 
-
         // Aspnet user ID
         public string OwnerId { get; set; }
 
         [Required]
+        [StringLength(60, MinimumLength = 3)]
         public string Username { get; set; }
 
         [Required]
@@ -24,10 +25,12 @@ namespace DomainRegistrarWebApp.Models.Users
 
         [Required]
         [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal Balance { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
+        [StringLength(128, MinimumLength = 7)]
         public string Password { get; set; }
 
         [DataType(DataType.DateTime)]

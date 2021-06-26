@@ -9,7 +9,7 @@ namespace DomainRegistrarWebApp.Authorization
 {
     public class UserIsOwnerAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, User>
     {
-        private UserManager<IdentityUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public UserIsOwnerAuthorizationHandler(UserManager<IdentityUser> userManager)
         {

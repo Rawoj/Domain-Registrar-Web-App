@@ -1,6 +1,8 @@
-﻿using DomainRegistrarWebApp.Interfaces;
+﻿using DomainRegistrarWebApp.Database;
+using DomainRegistrarWebApp.Interfaces;
 using DomainRegistrarWebApp.Models;
 using DomainRegistrarWebApp.Models.Users;
+using DomainRegistrarWebApp.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +21,13 @@ namespace DomainRegistrarWebApp.Controllers
     public class AuthController : Controller
     {
 
+        private readonly ApplicationDbContext _db;
+
+        public AuthController(ApplicationDbContext db)
+        {
+            _db = db;
+        }
+
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
@@ -28,23 +37,34 @@ namespace DomainRegistrarWebApp.Controllers
 
         private bool ValidateLogin(string userName, string password)
         {
-            User user = new User
+            IUsersDataService usersContext = new UsersDataService(_db);
+            User user = new()
             {
                 Username = userName,
-                Password = password
+               
             };
-            //var r = FindUser(user);
-            User r = null;
-            return r != null;
+            User match = usersContext.GetUser(user);
+            if (match == null)
+            {
+                return false;
+            }
+            var arePasswordsMatching = PasswordUtils.ComparePasswords(password, match.Password);
+
+            return arePasswordsMatching;
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string userName, string password, string returnUrl = null)
         {
+      
             ViewData["ReturnUrl"] = returnUrl;
 
-            // Normally Identity handles sign in, but you can do it directly
-            
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             if (ValidateLogin(userName, password))
             {
                 var claims = new List<Claim>
@@ -70,19 +90,46 @@ namespace DomainRegistrarWebApp.Controllers
                 }
                 else
                 {
-                    return Redirect("/");
+                    return Redirect("/Account/Profile");
                 }
             }
 
             return View();
         }
 
-        public async Task<IActionResult> SignUp()
-        {           
-            return View();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SignUp([Bind("Username, Email, Password")] User u)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            IUsersDataService usersContext = new UsersDataService(_db);
+            u.DateCreated = System.DateTime.Now;
+            u.Balance = 0;
+            u.Password = PasswordUtils.GeneratePasswordHash(u.Password);
+            var isRegistered = await usersContext.AddUser(u);
+            if (isRegistered)
+            {
+                // If registered correctly, automatically log in and go to the profile
+                return await Login(u.Username, u.Password, "/Account/Profile");
+            }
+            else
+            {
+                return View();
+            }      
+            
         }
 
-        public async Task<IActionResult> Denied()
+        [HttpGet]
+        public IActionResult SignUp()
+        {
+            return View(model: User);
+        }
+
+        public IActionResult Denied()
         {
             return View();
         }
