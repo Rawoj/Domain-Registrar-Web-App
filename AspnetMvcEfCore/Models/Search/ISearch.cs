@@ -8,6 +8,6 @@ namespace DomainRegistrarWebApp.Models.Search
 {
     public interface ISearch
     {
-        public ISearchResult CheckAvailability(string domainName);
+        public Task<ISearchResult> CheckAvailability(string domainName);
     }
 }

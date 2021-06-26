@@ -15,7 +15,7 @@ namespace DomainRegistrarWebApp.Database
         {
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<AppUser> Users { get; set; }
         public DbSet<BoughtDomain> BoughtDomains { get; set; }
 
 

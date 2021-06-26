@@ -7,35 +7,30 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using DomainRegistrarWebApp.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DomainRegistrarWebApp.Models.Search
 {
 
-    public class Search : ISearch
+    public class Search
     {
-        private string apiKey;
-
-        private void SetApiKey(string value)
-        {
-            apiKey = value;
-        }
+        private string _apiKey;
 
         private const string apiUrl = @"https://domain-availability.whoisxmlapi.com/api/";
         private const string apiVersion = "v1";
         private const string outputFormat = "JSON";
-        public ISearchResult CheckAvailability(string domainName)
-        {        
+        public async Task<DomainInfo> CheckAvailability(string domainName)
+        {
 
             StringBuilder apiCall = new();
             apiCall.Append(apiUrl);
             apiCall.Append(apiVersion);
             apiCall.Append('?');
             apiCall.Append("apiKey=");
-            apiCall.Append(apiKey);
+            apiCall.Append(_apiKey);
             apiCall.Append('&');
             apiCall.Append("domainName=");
             apiCall.Append(domainName);
@@ -43,24 +38,37 @@ namespace DomainRegistrarWebApp.Models.Search
             apiCall.Append("outputFormat=");
             apiCall.Append(outputFormat);
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(apiCall.ToString());
+            Root resultResponse;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync(apiCall.ToString()))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    resultResponse = JsonConvert.DeserializeObject<Root>(apiResponse);
+                    DomainInfo result = new() 
+                    {
+                        domainName = resultResponse.DomainInfo.domainName,
+                        domainAvailability = resultResponse.DomainInfo.domainAvailability
+                    };
+
+                    return result;
+                }
+            }
+
+            /*
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create();
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             Stream resStream = response.GetResponseStream();
             StreamReader sr = new(resStream);
             var jsonObject = JsonSerializer.Deserialize<SearchResult>(sr.ReadToEnd());
+            */
 
-            ISearchResult result = new SearchResult
-            {
-                DomainName = jsonObject.DomainName,
-                DomainAvailability = jsonObject.DomainAvailability
-            };
-            return result;
+           
         }
 
-        public Search()
+        public Search(string apiKey)
         {
-            var x = new AppKeyConfig();
-            SetApiKey(x.WhoIsXmlApiKey);
+            _apiKey = apiKey;
         }
     }
 }

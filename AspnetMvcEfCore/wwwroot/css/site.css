@@ -76,3 +76,9 @@ body {
 .nav-nontransparent {
     background: white !important;
 }
+
+
+.margin-sides {
+    /* vertical | horizontal */
+    margin: 5% 10%;
+}

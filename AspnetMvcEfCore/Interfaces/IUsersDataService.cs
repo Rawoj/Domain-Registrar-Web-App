@@ -6,12 +6,16 @@ namespace DomainRegistrarWebApp.Interfaces
 {
     internal interface IUsersDataService
     {
-        Task<List<User>> GetUsers();
+        Task<List<AppUser>> GetUsers();
 
-        User GetUser(User u);
+        AppUser GetUser(AppUser u);
 
-        Task<bool> AddUser(User u);
+        AppUser GetUser(string username);
 
-        Task AddUsersByTransaction(IEnumerable<User> users);
+        Task<bool> AddUser(AppUser u);
+
+        Task AddUsersByTransaction(IEnumerable<AppUser> users);
+        //void UpdateUser(AppUser user, AppUser changedUser);
+        void Task<UpdateUser>(AppUser user, AppUser changedUser);
     }
 }

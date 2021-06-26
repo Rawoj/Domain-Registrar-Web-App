@@ -31,23 +31,25 @@ namespace DomainRegistrarWebApp.Controllers
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
+            var appUser = new AppUser();
             ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            return View(appUser);
         }
 
         private bool ValidateLogin(string userName, string password)
         {
             IUsersDataService usersContext = new UsersDataService(_db);
-            User user = new()
+            AppUser user = new()
             {
                 Username = userName,
                
             };
-            User match = usersContext.GetUser(user);
+            AppUser match = usersContext.GetUser(user);
             if (match == null)
             {
                 return false;
             }
+            password = password.Normalize();
             var arePasswordsMatching = PasswordUtils.ComparePasswords(password, match.Password);
 
             return arePasswordsMatching;
@@ -59,6 +61,7 @@ namespace DomainRegistrarWebApp.Controllers
         {
       
             ViewData["ReturnUrl"] = returnUrl;
+
 
             if (!ModelState.IsValid)
             {
@@ -94,12 +97,12 @@ namespace DomainRegistrarWebApp.Controllers
                 }
             }
 
-            return View();
+            return Login();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SignUp([Bind("Username, Email, Password")] User u)
+        public async Task<IActionResult> SignUp([Bind("Username, Email, Password")] AppUser u)
         {
             if (!ModelState.IsValid)
             {
@@ -109,7 +112,8 @@ namespace DomainRegistrarWebApp.Controllers
             IUsersDataService usersContext = new UsersDataService(_db);
             u.DateCreated = System.DateTime.Now;
             u.Balance = 0;
-            u.Password = PasswordUtils.GeneratePasswordHash(u.Password);
+            var passwordHash = PasswordUtils.GeneratePasswordHash(u.Password);
+            u.Password = passwordHash;
             var isRegistered = await usersContext.AddUser(u);
             if (isRegistered)
             {
@@ -126,7 +130,8 @@ namespace DomainRegistrarWebApp.Controllers
         [HttpGet]
         public IActionResult SignUp()
         {
-            return View(model: User);
+            var appUser = new AppUser();
+            return View(model: appUser);
         }
 
         public IActionResult Denied()

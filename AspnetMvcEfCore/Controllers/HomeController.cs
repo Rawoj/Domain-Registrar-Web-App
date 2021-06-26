@@ -14,9 +14,18 @@ namespace DomainRegistrarWebApp.Controllers
             _logger = logger;
         }
 
+
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Index(string q)
+        {
+            var url =  Url.Action("SearchResult", "Search", new { query = q});
+            return Redirect(url);
         }
 
         public IActionResult About()

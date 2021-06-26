@@ -2,6 +2,7 @@
 using DomainRegistrarWebApp.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace DomainRegistrarWebApp.Interfaces
             _db = db;
         }
 
-        public async Task<bool> AddUser(User u)
+        public async Task<bool> AddUser(AppUser u)
         {
             try
             {
@@ -31,7 +32,7 @@ namespace DomainRegistrarWebApp.Interfaces
             }
         }
 
-        public async Task AddUsersByTransaction(IEnumerable<User> users)
+        public async Task AddUsersByTransaction(IEnumerable<AppUser> users)
         {
             try
             {
@@ -50,29 +51,64 @@ namespace DomainRegistrarWebApp.Interfaces
             }
         }
 
-        public async Task<List<User>> GetUsers()
+        public async Task<List<AppUser>> GetUsers()
         {
             return await _db.Users.ToListAsync();
         }
 
-        public User GetUser(User u)
+        public AppUser GetUser(string username)
         {
-            return _db.Find<User>(u);
+            var q =_db.Users.FirstOrDefaultAsync(s => s.Username == username);
+
+            return q.Result;
         }
 
+        public AppUser GetUser(AppUser u)
+        {
+            return GetUser(u.Username);
+        }
 
-        public async void Task<AddBalance>(User u, decimal amount)
+        public async void Task<UpdateUser>(AppUser u, AppUser changedUser)
         {
             try
             {
                 await _db.Database.BeginTransactionAsync();
-
                 var user = GetUser(u);
+
                 // User not found
                 if (user == null)
                 {
                     await _db.Database.RollbackTransactionAsync();
+                    return;
                 }
+
+                _db.Update(user);
+                user = changedUser;
+                await _db.SaveChangesAsync();
+                await _db.Database.CommitTransactionAsync();
+            }
+            catch (Exception)
+            {
+                await _db.Database.RollbackTransactionAsync();
+            }
+        }
+            
+
+        public async void Task<AddBalance>(AppUser u, decimal amount)
+        {
+            try
+            {
+                await _db.Database.BeginTransactionAsync();
+                var user = GetUser(u);
+
+                // User not found
+                if (user == null)
+                {
+                    await _db.Database.RollbackTransactionAsync();
+                    return;
+                }
+
+                _db.Update(user);
                 user.Balance += amount;
 
 
@@ -85,6 +121,34 @@ namespace DomainRegistrarWebApp.Interfaces
             }
 
         }
+
+
+        public async void Task<RemoveUser>(AppUser u)
+        {
+            try
+            {
+                await _db.Database.BeginTransactionAsync();
+                var user = GetUser(u);
+
+                // User not found
+                if (user == null)
+                {
+                    await _db.Database.RollbackTransactionAsync();
+                    return;
+                }
+
+                _db.Remove(user);
+
+                await _db.SaveChangesAsync();
+                await _db.Database.CommitTransactionAsync();
+            }
+            catch (Exception)
+            {
+                await _db.Database.RollbackTransactionAsync();
+            }
+
+        }
+
 
     }
 }

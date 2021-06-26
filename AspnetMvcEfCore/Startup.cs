@@ -38,6 +38,14 @@ namespace DomainRegistrarWebApp
                    assembly => assembly.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
             });
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Auth/Login";
+                options.LogoutPath = "/Auth/LogOut";
+            });
+
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
@@ -74,7 +82,7 @@ namespace DomainRegistrarWebApp
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddAuthentication(IISDefaults.AuthenticationScheme);
+
 
             // Authorization handlers.
             services.AddScoped<IAuthorizationHandler,
@@ -82,9 +90,6 @@ namespace DomainRegistrarWebApp
 
             services.AddSingleton<IAuthorizationHandler,
                                   UserIsAdminAuthorizationHandler>();
-
-
-            services.Configure<AppKeyConfig>(Configuration.GetSection("WhoIsXmlApiKey:ServiceApiKey"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -113,6 +118,10 @@ namespace DomainRegistrarWebApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "search",
+                    pattern: "{controller=Search}/{action=SearchResult}#{query}");
             });
 
         }

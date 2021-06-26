@@ -7,7 +7,7 @@ using static DomainRegistrarWebApp.Authorization.UserManager;
 
 namespace DomainRegistrarWebApp.Authorization
 {
-    public class UserIsOwnerAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, User>
+    public class UserIsOwnerAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, AppUser>
     {
         private readonly UserManager<IdentityUser> _userManager;
 
@@ -19,7 +19,7 @@ namespace DomainRegistrarWebApp.Authorization
         protected override Task
             HandleRequirementAsync(AuthorizationHandlerContext context,
                                    OperationAuthorizationRequirement requirement,
-                                   User resource)
+                                   AppUser resource)
         {
             if (context.User == null || resource == null)
             {

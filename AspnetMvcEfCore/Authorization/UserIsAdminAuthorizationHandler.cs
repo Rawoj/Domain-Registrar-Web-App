@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 namespace DomainRegistrarWebApp.Authorization
 {
     public class UserIsAdminAuthorizationHandler
-                    : AuthorizationHandler<OperationAuthorizationRequirement, User>
+                    : AuthorizationHandler<OperationAuthorizationRequirement, AppUser>
     {
         protected override Task HandleRequirementAsync(
                                               AuthorizationHandlerContext context,
                                     OperationAuthorizationRequirement requirement,
-                                     User resource)
+                                     AppUser resource)
         {
             if (context.User == null)
             {

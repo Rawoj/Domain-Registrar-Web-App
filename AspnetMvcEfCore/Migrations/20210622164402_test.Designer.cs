@@ -11,7 +11,7 @@ namespace DomainRegistrarWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20210622164402_test")]
-    partial class test
+    partial class Test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
