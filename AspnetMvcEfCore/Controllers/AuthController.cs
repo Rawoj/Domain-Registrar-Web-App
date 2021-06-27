@@ -112,13 +112,14 @@ namespace DomainRegistrarWebApp.Controllers
             IUsersDataService usersContext = new UsersDataService(_db);
             u.DateCreated = System.DateTime.Now;
             u.Balance = 0;
-            var passwordHash = PasswordUtils.GeneratePasswordHash(u.Password);
+            var passwordPlain = new string(u.Password);
+            var passwordHash = PasswordUtils.GeneratePasswordHash(u.Password);        
             u.Password = passwordHash;
             var isRegistered = await usersContext.AddUser(u);
             if (isRegistered)
             {
                 // If registered correctly, automatically log in and go to the profile
-                return await Login(u.Username, u.Password, "/Account/Profile");
+                return await Login(u.Username, passwordPlain, "/Account/Profile");
             }
             else
             {

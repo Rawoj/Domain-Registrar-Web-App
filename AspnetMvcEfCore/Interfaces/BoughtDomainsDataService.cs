@@ -13,7 +13,7 @@ namespace DomainRegistrarWebApp.Interfaces
 
         public BoughtDomainsDataService(ApplicationDbContext db)
         {
-            _db = db;
+            _db = db;          
         }
 
         public async Task<bool> AddBoughtDomain(BoughtDomain boughtDomain)
