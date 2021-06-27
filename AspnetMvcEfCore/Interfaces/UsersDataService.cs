@@ -22,7 +22,7 @@ namespace DomainRegistrarWebApp.Interfaces
         {
             try
             {
-                _db.Users.Add(u);
+                await _db.Users.AddAsync(u);
                 await _db.SaveChangesAsync();
                 return true;
             }

@@ -17,7 +17,7 @@ namespace DomainRegistrarWebApp.Models.Search
 
     public class Search
     {
-        private string _apiKey;
+        private readonly string _apiKey;
 
         private const string apiUrl = @"https://domain-availability.whoisxmlapi.com/api/";
         private const string apiVersion = "v1";
@@ -39,21 +39,17 @@ namespace DomainRegistrarWebApp.Models.Search
             apiCall.Append(outputFormat);
 
             Root resultResponse;
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+            using var response = await httpClient.GetAsync(apiCall.ToString());
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            resultResponse = JsonConvert.DeserializeObject<Root>(apiResponse);
+            DomainInfo result = new()
             {
-                using (var response = await httpClient.GetAsync(apiCall.ToString()))
-                {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    resultResponse = JsonConvert.DeserializeObject<Root>(apiResponse);
-                    DomainInfo result = new() 
-                    {
-                        domainName = resultResponse.DomainInfo.domainName,
-                        domainAvailability = resultResponse.DomainInfo.domainAvailability
-                    };
+                domainName = resultResponse.DomainInfo.domainName,
+                domainAvailability = resultResponse.DomainInfo.domainAvailability
+            };
 
-                    return result;
-                }
-            }
+            return result;
 
             /*
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create();
@@ -63,7 +59,7 @@ namespace DomainRegistrarWebApp.Models.Search
             var jsonObject = JsonSerializer.Deserialize<SearchResult>(sr.ReadToEnd());
             */
 
-           
+
         }
 
         public Search(string apiKey)

@@ -1,5 +1,99 @@
 ﻿@{
     ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/Layouts/_ProfileLayout.cshtml";
 }
+@using DomainRegistrarWebApp.Models.Profile
+@model ProfileUser
 
-<h1>View</h1>
+<div>
+    <br />
+    <h2 class="text-center">Hello, @Model.Username!</h2>
+    <div class="m-lg-5">
+        <div class="m-lg-5">
+            <table class="table table-hover table-bordered">
+                <tbody>
+                    <tr>
+                        <td>
+                            <b>Your email:</b>
+                        </td>
+                        <td>
+                            @Model.Email
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Account creation date:</b>
+                        </td>
+                        <td>
+                            @Model.DateCreated.ToShortDateString()
+                        </td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Your Balance:</b>
+                        </td>
+                        <td>
+                            $@Model.Balance.ToString("0.##")
+                        </td>
+                        <td>
+                            <button class="btn btn-success">Add balance</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        @{
+                            if (Model.BoughtDomains == null)
+                            {
+                                <td>You don't own any domains.</td>
+                                <td></td>
+                                <td>
+                                    <button class="btn btn-primary">Get one</button>
+                                </td>
+                            }
+                            else
+                            {
+                                <td><b>Your bought domains:</b></td>
+<tr>
+                                <th scope="col"><b>Domain name</b></th>
+                                <th scope="col"><b>Domain purchase date</b></th>
+                                <th scope="col"><b>Domain expiration date</b></th>
+                                <th scope="col"></th>
+                            </tr>
+                            @foreach (var domain in Model.BoughtDomains)
+                            {
+                                <tr>
+                                    <td scope="row">@domain.Name</td>
+                                    <td scope="row">@domain.PurchaseDate</td>
+                                    <td scope="row">@domain.ExpirationDate</td>
+                                    <td scope="row">
+                                        @{
+                                            string buttonLabel;
+                                            if (DateTime.Now > domain.ExpirationDate)
+                                            {
+                                                buttonLabel = "Renew domain lease";
+                                            }
+                                            else
+                                            {
+                                                buttonLabel = "Extend domain lease";
+                                            }
+                                            <button class="btn btn-warning">@buttonLabel</button>
+                                        }
+                                    </td>
+                                </tr>
+
+                            }
+                        }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+            </div>
+
+            @await Html.PartialAsync("_ProfileFooter");
+
+            <br />
+            <br />
+        </div>

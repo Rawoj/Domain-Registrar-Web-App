@@ -14,6 +14,7 @@ namespace DomainRegistrarWebApp.Database
         protected ApplicationDbContext()
         {
             Database.EnsureCreated();
+            Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

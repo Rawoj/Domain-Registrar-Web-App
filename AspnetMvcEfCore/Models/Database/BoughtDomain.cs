@@ -12,12 +12,8 @@ namespace DomainRegistrarWebApp.Database
         public int Id { get; set; }
 
         [Required]
-        [StringLength(64, MinimumLength = 1)]
+        [StringLength(128, MinimumLength = 2)]
         public string Name { get; set; }
-
-        [Required]
-        [StringLength(60, MinimumLength = 1)]
-        public string TopLevelDomain { get; set; }
 
         [Required]
         public AppUser Owner { get; set; }
