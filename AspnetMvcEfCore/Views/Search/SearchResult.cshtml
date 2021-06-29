@@ -27,10 +27,14 @@
                     {
                         <td class="alert alert-danger">@da</td>
                     }
-                    else
+                    else if (da == "AVAILABLE")
                     {
                         <td class="alert alert-success">@da</td>
                         <td><button class="btn btn-success">Buy now - $10</button></td>
+                    }
+                    else
+                    {
+                        <td class="alert alert-danger">@da</td>
                     }
                 }
             </tr>
@@ -42,9 +46,13 @@
         {
             <h4 class="text-center">Your domain name is taken. Please choose another.</h4><br />
         }
-        else
+        else if (da == "AVAILABLE")
         {
             <h4 class="text-center">Changed your mind? Check another domain name.</h4><br />
+        }
+        else
+        {
+            <h4 class="text-center">Check another domain name.</h4><br />
         }
         <div class="container-md">@await Html.PartialAsync("Banners/_Search")</div>
     }

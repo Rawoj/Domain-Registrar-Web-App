@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using DomainRegistrarWebApp.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DomainRegistrarWebApp.Models.Search
@@ -24,19 +25,16 @@ namespace DomainRegistrarWebApp.Models.Search
         private const string outputFormat = "JSON";
         public async Task<DomainInfo> CheckAvailability(string domainName)
         {
+            if (!ValidateName(domainName))
+            {
+                return new DomainInfo()
+                {
+                    domainName = "",
+                    domainAvailability = "Incorrect domain name"
+                };
+            }
 
-            StringBuilder apiCall = new();
-            apiCall.Append(apiUrl);
-            apiCall.Append(apiVersion);
-            apiCall.Append('?');
-            apiCall.Append("apiKey=");
-            apiCall.Append(_apiKey);
-            apiCall.Append('&');
-            apiCall.Append("domainName=");
-            apiCall.Append(domainName);
-            apiCall.Append('&');
-            apiCall.Append("outputFormat=");
-            apiCall.Append(outputFormat);
+            string apiCall = BuildApiCall(domainName);
 
             Root resultResponse;
             using var httpClient = new HttpClient();
@@ -51,15 +49,32 @@ namespace DomainRegistrarWebApp.Models.Search
 
             return result;
 
-            /*
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create();
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Stream resStream = response.GetResponseStream();
-            StreamReader sr = new(resStream);
-            var jsonObject = JsonSerializer.Deserialize<SearchResult>(sr.ReadToEnd());
-            */
+        }
 
+        private static bool ValidateName(string domainName)
+        {
+            Regex rx = new (@"^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\\.)+[A-Za-z]{2,6}$");
+            MatchCollection matches = rx.Matches(domainName);
+            return matches.Any();
 
+        }
+
+        private string BuildApiCall(string domainName)
+        {
+            StringBuilder apiCall = new();
+            apiCall.Append(apiUrl);
+            apiCall.Append(apiVersion);
+            apiCall.Append('?');
+            apiCall.Append("apiKey=");
+            apiCall.Append(_apiKey);
+            apiCall.Append('&');
+            apiCall.Append("domainName=");
+            apiCall.Append(domainName);
+            apiCall.Append('&');
+            apiCall.Append("outputFormat=");
+            apiCall.Append(outputFormat);
+
+            return apiCall.ToString();
         }
 
         public Search(string apiKey)
