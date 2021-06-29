@@ -1,4 +1,5 @@
-﻿using DomainRegistrarWebApp.Models;
+﻿using DomainRegistrarWebApp.Database;
+using DomainRegistrarWebApp.Models;
 using DomainRegistrarWebApp.Models.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +14,10 @@ namespace DomainRegistrarWebApp.Controllers
     {
         private readonly IConfiguration _config;
         private readonly ILogger<SearchController> _logger;
-
-        public SearchController(ILogger<SearchController> logger, IConfiguration config)
+        private readonly ApplicationDbContext _db;
+        public SearchController(ILogger<SearchController> logger, IConfiguration config, ApplicationDbContext db)
         {
+            _db = db;
             _logger = logger;
             _config = config;
         }
@@ -35,20 +37,20 @@ namespace DomainRegistrarWebApp.Controllers
             return Redirect(url);
         }
 
-        private async Task<SearchResultViewModel> getSearchResult(string query)
+        private async Task<SearchResultViewModel> GetSearchResult(string query)
         {
             if (string.IsNullOrEmpty(query))
             {
                 throw new System.ArgumentException($"'{nameof(query)}' cannot be null or empty.", nameof(query));
             }
             var key = _config.GetSection("WhoIsXMLAPI:ServiceApiKey").Value;
-            Search s = new(key);
+            Search s = new(key, _db);
             var result = s.CheckAvailability(query);
             var r = await result;
             var searchResultView = new SearchResultViewModel
             {
-                DomainAvailability = r.domainAvailability,
-                DomainName = r.domainName
+                DomainAvailability = r.DomainAvailability,
+                DomainName = r.DomainName
             };
             return searchResultView;
         }
@@ -57,7 +59,7 @@ namespace DomainRegistrarWebApp.Controllers
         [Authorize]
         public async Task<IActionResult> SearchResult(string query)
         {
-            return View(await getSearchResult(query));
+            return View(await GetSearchResult(query));
         }
 
             [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

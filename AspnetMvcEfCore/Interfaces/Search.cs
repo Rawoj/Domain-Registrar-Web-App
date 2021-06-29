@@ -11,6 +11,7 @@ using DomainRegistrarWebApp.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using DomainRegistrarWebApp.Database;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DomainRegistrarWebApp.Models.Search
@@ -18,6 +19,7 @@ namespace DomainRegistrarWebApp.Models.Search
 
     public class Search
     {
+        private readonly ApplicationDbContext _db;
         private readonly string _apiKey;
 
         private const string apiUrl = @"https://domain-availability.whoisxmlapi.com/api/";
@@ -29,11 +31,17 @@ namespace DomainRegistrarWebApp.Models.Search
             {
                 return new DomainInfo()
                 {
-                    domainName = "",
-                    domainAvailability = "Incorrect domain name"
+                    DomainName = "",
+                    DomainAvailability = "Incorrect domain name"
                 };
             }
 
+            var result = await CheckAvailabilityLocal(domainName);
+            // Already in local db, therefore it's taken
+            if(result.DomainAvailability == "UNAVAILABLE")
+            {
+                return result;
+            }
             string apiCall = BuildApiCall(domainName);
 
             Root resultResponse;
@@ -41,11 +49,10 @@ namespace DomainRegistrarWebApp.Models.Search
             using var response = await httpClient.GetAsync(apiCall.ToString());
             string apiResponse = await response.Content.ReadAsStringAsync();
             resultResponse = JsonConvert.DeserializeObject<Root>(apiResponse);
-            DomainInfo result = new()
+            if (resultResponse.DomainInfo.DomainAvailability == "UNAVAILABLE")
             {
-                domainName = resultResponse.DomainInfo.domainName,
-                domainAvailability = resultResponse.DomainInfo.domainAvailability
-            };
+                result.DomainAvailability = resultResponse.DomainInfo.DomainAvailability;
+            }           
 
             return result;
 
@@ -56,7 +63,6 @@ namespace DomainRegistrarWebApp.Models.Search
             Regex rx = new (@"^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\\.)+[A-Za-z]{2,6}$");
             MatchCollection matches = rx.Matches(domainName);
             return matches.Any();
-
         }
 
         private string BuildApiCall(string domainName)
@@ -77,9 +83,39 @@ namespace DomainRegistrarWebApp.Models.Search
             return apiCall.ToString();
         }
 
-        public Search(string apiKey)
+        /*
+         * Since we're not really buying domain
+         *  whoisxmlapi will still show them as available.
+         *  To fix this, we're gonna check local database first
+        */
+        private async Task<DomainInfo> CheckAvailabilityLocal(string domainName)
+        {
+            var matches = await _db.BoughtDomains.FindAsync(new BoughtDomain()
+            {
+                Name = domainName
+            });
+
+
+            string availability = "UNAVAILABLE";
+            if(matches == null)
+            {
+                availability = "AVAILABLE";
+            }
+
+            var domainInfo = new DomainInfo()
+            {
+                DomainName = domainName,
+                DomainAvailability = availability
+            };
+
+            return domainInfo;
+        }
+
+
+        public Search(string apiKey, ApplicationDbContext db)
         {
             _apiKey = apiKey;
+            _db = db;
         }
     }
 }
