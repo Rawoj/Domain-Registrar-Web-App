@@ -73,12 +73,14 @@
                                             if (DateTime.Now > domain.ExpirationDate)
                                             {
                                                 buttonLabel = "Renew domain lease";
+                                                <button class="btn btn-warning">@buttonLabel</button>
                                             }
                                             else
                                             {
                                                 buttonLabel = "Extend domain lease";
+                                                <button class="btn btn-primary">@buttonLabel</button>
                                             }
-                                            <button class="btn btn-warning">@buttonLabel</button>
+
                                         }
                                     </td>
                                 </tr>

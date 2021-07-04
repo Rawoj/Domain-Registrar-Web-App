@@ -37,20 +37,19 @@ namespace DomainRegistrarWebApp.Controllers
             return Redirect(url);
         }
 
-        private async Task<SearchResultViewModel> GetSearchResult(string query)
+        public async Task<SearchResultViewModel> GetSearchResult(string query)
         {
             if (string.IsNullOrEmpty(query))
             {
                 throw new System.ArgumentException($"'{nameof(query)}' cannot be null or empty.", nameof(query));
             }
             var key = _config.GetSection("WhoIsXMLAPI:ServiceApiKey").Value;
-            Search s = new(key, _db);
-            var result = s.CheckAvailability(query);
-            var r = await result;
+            ISearch s = new Search(key, _db);
+            var result = await s.CheckAvailability(query);
             var searchResultView = new SearchResultViewModel
             {
-                DomainAvailability = r.DomainAvailability,
-                DomainName = r.DomainName
+                DomainAvailability = result.DomainAvailability,
+                DomainName = result.DomainName
             };
             return searchResultView;
         }

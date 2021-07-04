@@ -11,5 +11,9 @@ namespace DomainRegistrarWebApp.Interfaces
         Task<bool> AddBoughtDomain(BoughtDomain d);
 
         Task AddBoughtDomainsByTransaction(IEnumerable<BoughtDomain> boughtDomains);
+        BoughtDomain GetBoughtDomain(BoughtDomain boughtDomain);
+
+        Task<BoughtDomain> GetBoughtDomainAsync(BoughtDomain boughtDomain);
+
     }
 }

@@ -3,6 +3,7 @@ using DomainRegistrarWebApp.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DomainRegistrarWebApp.Interfaces
@@ -48,6 +49,27 @@ namespace DomainRegistrarWebApp.Interfaces
             {
                 await _db.Database.RollbackTransactionAsync();
             }
+        }
+
+        public BoughtDomain GetBoughtDomain(BoughtDomain boughtDomain)
+        {
+            var q = _db.BoughtDomains.FirstOrDefault(s => s.Name == boughtDomain.Name);
+            if (q == default)
+            {
+                return null;
+            }
+            return q;
+        }
+
+        public async Task<BoughtDomain> GetBoughtDomainAsync(BoughtDomain boughtDomain)
+        {
+            var q = await _db.BoughtDomains.FirstOrDefaultAsync(s => s.Name == boughtDomain.Name);
+
+            if(q == default)
+            {
+                return null;
+            }
+            return q;
         }
 
         public async Task<List<BoughtDomain>> GetBoughtDomains()

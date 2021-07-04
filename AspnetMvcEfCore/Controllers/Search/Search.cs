@@ -12,12 +12,13 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using DomainRegistrarWebApp.Database;
+using DomainRegistrarWebApp.Interfaces;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DomainRegistrarWebApp.Models.Search
 {
 
-    public class Search
+    public class Search : ISearch
     {
         private readonly ApplicationDbContext _db;
         private readonly string _apiKey;
@@ -27,7 +28,7 @@ namespace DomainRegistrarWebApp.Models.Search
         private const string outputFormat = "JSON";
         public async Task<DomainInfo> CheckAvailability(string domainName)
         {
-            if (!ValidateName(domainName))
+            if (!IsNameValid(domainName))
             {
                 return new DomainInfo()
                 {
@@ -40,7 +41,11 @@ namespace DomainRegistrarWebApp.Models.Search
             // Already in local db, therefore it's taken
             if(result.DomainAvailability == "UNAVAILABLE")
             {
-                return result;
+                return new DomainInfo()
+                {
+                    DomainName = domainName,
+                    DomainAvailability = result.DomainAvailability
+                };
             }
             string apiCall = BuildApiCall(domainName);
 
@@ -49,20 +54,16 @@ namespace DomainRegistrarWebApp.Models.Search
             using var response = await httpClient.GetAsync(apiCall.ToString());
             string apiResponse = await response.Content.ReadAsStringAsync();
             resultResponse = JsonConvert.DeserializeObject<Root>(apiResponse);
-            if (resultResponse.DomainInfo.DomainAvailability == "UNAVAILABLE")
+            return new DomainInfo()
             {
-                result.DomainAvailability = resultResponse.DomainInfo.DomainAvailability;
-            }           
-
-            return result;
-
+                DomainName = domainName,
+                DomainAvailability = resultResponse.DomainInfo.DomainAvailability,
+            };          
         }
 
-        private static bool ValidateName(string domainName)
+        private static bool IsNameValid(string domainName)
         {
-            Regex rx = new (@"^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\\.)+[A-Za-z]{2,6}$");
-            MatchCollection matches = rx.Matches(domainName);
-            return matches.Any();
+            return Uri.IsWellFormedUriString(domainName, UriKind.RelativeOrAbsolute);
         }
 
         private string BuildApiCall(string domainName)
@@ -90,16 +91,21 @@ namespace DomainRegistrarWebApp.Models.Search
         */
         private async Task<DomainInfo> CheckAvailabilityLocal(string domainName)
         {
-            var matches = await _db.BoughtDomains.FindAsync(new BoughtDomain()
+            IBoughtDomainsDataService dataService = new BoughtDomainsDataService(_db);
+            var matches = await dataService.GetBoughtDomainAsync(new BoughtDomain()
             {
                 Name = domainName
             });
 
 
-            string availability = "UNAVAILABLE";
-            if(matches == null)
+            string availability;
+            if (matches == null)
             {
                 availability = "AVAILABLE";
+            }
+            else
+            {
+                availability = "UNAVAILABLE";
             }
 
             var domainInfo = new DomainInfo()
