@@ -62,7 +62,6 @@ namespace DomainRegistrarWebApp.Controllers
       
             ViewData["ReturnUrl"] = returnUrl;
 
-
             if (!ModelState.IsValid)
             {
                 return View();

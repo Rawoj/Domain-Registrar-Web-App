@@ -27,14 +27,21 @@
                 <td>@dm</td>
 
                 @{
+                    // TODO: Fix this garbanzo bean
+                    // make button send domain name in POST
                     if (da == "UNAVAILABLE")
                     {
                         <td class="alert alert-danger">@da</td>
                     }
                     else if (da == "AVAILABLE")
                     {
-                        <td class="alert alert-success">@da</td>
-                        <td><button href="@Url.Action("Index", "Purchase", dm)" class="btn btn-success">Buy now - $10</button></td>
+                        <td class="alert alert-success">@da</td>                  
+                        <td>
+                            <form asp-controller="Purchase" asp-action="Index" method="post">
+                                <input hidden value="@dm" name="Name"/>
+                                <button type="submit" id="form-submit" class="btn btn-success">Buy now - $10</button>
+                            </form>
+                        </td>
                     }
                     else
                     {

@@ -2,7 +2,11 @@
     ViewData["Title"] = "Purchase";
     Layout = "~/Views/Shared/Layouts/_Layout.cshtml";
 }
-
+@using DomainRegistrarWebApp.Models.Purchase
+@model PurchaseDetailsModel
+@{
+    string dm = Model.DomainName;
+}
 
 <br />
 <div class="m-lg-5">

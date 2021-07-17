@@ -60,8 +60,17 @@ namespace DomainRegistrarWebApp.Controllers
         {
             return View(await GetSearchResult(query));
         }
-
-            [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        
+        /*
+        [HttpPost]
+        [Authorize]
+        public IActionResult SearchResult()
+        {
+            var url = Url.Action("Index", "Purchase");
+            return Redirect(url);
+        }
+        */
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
