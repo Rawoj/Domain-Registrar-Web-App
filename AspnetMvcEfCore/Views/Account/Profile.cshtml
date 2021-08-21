@@ -42,19 +42,22 @@
                             <button class="btn btn-success">Add balance</button>
                         </td>
                     </tr>
+                </tbody>
+            </table>
+            <table class ="table table-hover table-bordered">
+                <tbody>
                     <tr>
                         @{
-                            if (Model.BoughtDomains == null)
+                            if (Model.BoughtDomains == null || !Model.BoughtDomains.Any())
                             {
                                 <td>You don't own any domains.</td>
-                                <td></td>
                                 <td>
                                     <button class="btn btn-primary">Get one</button>
                                 </td>
                             }
                             else
                             {
-                                <td><b>Your bought domains:</b></td>
+                                <td><h3><b>Your bought domains:</b></h3></td>
                             <tr>
                                 <th scope="col"><b>Domain name</b></th>
                                 <th scope="col"><b>Domain purchase date</b></th>
@@ -90,11 +93,11 @@
                         }
 
                     </tbody>
-                </table>
-            </div>
+                    </table>
+</div>
             </div>
 
-            @await Html.PartialAsync("_ProfileFooter");
+            @await Html.PartialAsync("_ProfileFooter")
 
             <br />
             <br />

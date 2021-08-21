@@ -1,4 +1,5 @@
-﻿using DomainRegistrarWebApp.Models.Users;
+﻿using DomainRegistrarWebApp.Database;
+using DomainRegistrarWebApp.Models.Users;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,5 +18,7 @@ namespace DomainRegistrarWebApp.Interfaces
         Task AddUsersByTransaction(IEnumerable<AppUser> users);
         //void UpdateUser(AppUser user, AppUser changedUser);
         void Task<UpdateUser>(AppUser user, AppUser changedUser);
+
+        ICollection<BoughtDomain> GetUserDomains(AppUser user);
     }
 }

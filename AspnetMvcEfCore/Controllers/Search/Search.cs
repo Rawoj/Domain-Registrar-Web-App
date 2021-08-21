@@ -36,7 +36,11 @@ namespace DomainRegistrarWebApp.Models.Search
                     DomainAvailability = "Incorrect domain name"
                 };
             }
-
+            /*
+            *  Since we're not actually buying domains
+            *  whoisxmlapi will still show bought ones as available.
+            *  To fix this, we're gonna check local database first
+            */
             var result = await CheckAvailabilityLocal(domainName);
             // Already in local db, therefore it's taken
             if(result.DomainAvailability == "UNAVAILABLE")
@@ -84,11 +88,7 @@ namespace DomainRegistrarWebApp.Models.Search
             return apiCall.ToString();
         }
 
-        /*
-         * Since we're not really buying domain
-         *  whoisxmlapi will still show them as available.
-         *  To fix this, we're gonna check local database first
-        */
+       
         private async Task<DomainInfo> CheckAvailabilityLocal(string domainName)
         {
             IBoughtDomainsDataService dataService = new BoughtDomainsDataService(_db);

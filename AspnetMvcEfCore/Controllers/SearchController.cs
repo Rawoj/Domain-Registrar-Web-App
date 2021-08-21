@@ -33,7 +33,7 @@ namespace DomainRegistrarWebApp.Controllers
         [Authorize]
         public IActionResult Index(string q)
         {
-            var url = Url.Action("SearchResult", "Search", new { query = q });
+            var url = Url.Action("SearchResult", "Search", new { Name = q });
             return Redirect(url);
         }
 
@@ -60,16 +60,7 @@ namespace DomainRegistrarWebApp.Controllers
         {
             return View(await GetSearchResult(query));
         }
-        
-        /*
-        [HttpPost]
-        [Authorize]
-        public IActionResult SearchResult()
-        {
-            var url = Url.Action("Index", "Purchase");
-            return Redirect(url);
-        }
-        */
+              
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

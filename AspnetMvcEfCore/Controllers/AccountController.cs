@@ -27,18 +27,22 @@ namespace DomainRegistrarWebApp.Controllers
             var username = User.Identity.Name;
 
             IUsersDataService usersDataService = new UsersDataService(_db);
-            var usersData = usersDataService.GetUser(username);
-            if(usersData == null)
+            IBoughtDomainsDataService boughtDomainsDataService = new BoughtDomainsDataService(_db);
+            var userData = usersDataService.GetUser(username);
+            if(userData == null)
             {
                 return Redirect(Url.Action("LogOut", "Auth"));
             }
+
+            var boughtDomains = usersDataService.GetUserDomains(userData);
+
             var profileUser = new ProfileUser()
             {
-                Username = usersData.Username,
-                Email = usersData.Email,
-                DateCreated = usersData.DateCreated,
-                BoughtDomains = usersData.BoughtDomains,
-                Balance = usersData.Balance,
+                Username = userData.Username,
+                Email = userData.Email,
+                DateCreated = userData.DateCreated,
+                BoughtDomains = boughtDomains,
+                Balance = userData.Balance,
             };
 
             return View(profileUser);

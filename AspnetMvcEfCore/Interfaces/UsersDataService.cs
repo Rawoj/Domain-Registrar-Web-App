@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DomainRegistrarWebApp.Interfaces
@@ -149,6 +150,19 @@ namespace DomainRegistrarWebApp.Interfaces
 
         }
 
+        public ICollection<BoughtDomain> GetUserDomains(AppUser user)
+        {
+            var u = GetUser(user);
+            if (u == null || u == default)
+            {
+                return null;
+            }
 
+            ICollection<BoughtDomain> boughtDomains = _db.BoughtDomains
+                  .Where(d => d.Owner.Equals(u))
+                  .ToList();
+
+            return boughtDomains;
+        }
     }
 }
